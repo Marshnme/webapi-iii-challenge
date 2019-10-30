@@ -95,9 +95,21 @@ router.put('/:id', (req, res) => {
 //custom middleware
 
 function validateUserId(req, res, next) {
-    if(req.params.id){
-            
-    }
+    db.get()
+    .then(users => {
+        // newUser = users.filter(user => user.id == req.params.id)
+        // console.log("newUser",newUser)
+        if( users.map(id => id.id) === req.params.id){
+            console.log("VAAALIID")
+        }else{
+            res.status(400).json({error:"invalid user id"})
+        }
+    })
+    // .catch(err => {
+    //     console.log("error", err)
+    //     res.status(500).json({error:"The users information could not be retrieved."})
+    // })
+    
     next();
 };
 // MVP -------------------------------
