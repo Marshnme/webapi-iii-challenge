@@ -4,12 +4,29 @@ const router = require("express").Router();
 
 router.post('/', (req, res) => {
     
+    db.insert(req.body)
+    .then(newUser => {
+        res.status(201).json(newUser)
+    })
+    .catch(err => {
+        console.log("error", err)
+        res.status(500).json({error:"The users information could not be added."})
+    })
 });
 
+
+// NOT FUNCTIONAL -------- INSERT METHOD ONLY CAN BE USED ON USERS.
 router.post('/:id/posts', (req, res) => {
-
+    db.insert(req.body)
+    .then(newPost => {
+        res.status(200).json(newPost)
+    })
+    .catch(err => {
+        console.log("error", err)
+        res.status(500).json({error:"The users post could not be added."})
+    })
 });
-
+//--------------------------------------------------------------------
 router.get('/', (req, res) => {
     db.get()
     .then(users => {
@@ -35,15 +52,43 @@ router.get('/:id', (req, res) => {
 });
 
 router.get('/:id/posts', (req, res) => {
+    const id = req.params.id;
 
+    db.getUserPosts(id)
+    .then(userPost => {
+        res.status(200).json(userPost)
+    })
+    .catch(err => {
+        console.log("error", err)
+        res.status(500).json({error:"This users post information could not be retrieved."})
+    })
 });
 
 router.delete('/:id', (req, res) => {
+    const id = req.params.id;
 
+    db.remove(id)
+    .then(removed => {
+        res.status(200).json(removed)
+    })
+    .catch(err => {
+        console.log("error", err)
+        res.status(500).json({error:"The post could not be removed"})
+    })
 });
 
 router.put('/:id', (req, res) => {
+    const oldPost = req.params.id;
+    const updatedPost = req.body;
 
+    db.update(oldPost,updatedPost)
+    .then(updated => {
+        res.status(200).json(updated)
+    })
+    .catch(err => {
+        console.log("error", err)
+        res.status(500).json({error:"This users post information could not be updated."})
+    })
 });
 
 //custom middleware
