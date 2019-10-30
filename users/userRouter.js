@@ -1,8 +1,9 @@
 const express = 'express';
 const db = require(`./userDb`);
+const postDb = require("../posts/postDb");
 const router = require("express").Router();
 
-router.post('/', (req, res) => {
+router.post('/',validateUser, (req, res) => {
     
     db.insert(req.body)
     .then(newUser => {
@@ -15,9 +16,9 @@ router.post('/', (req, res) => {
 });
 
 
-// NOT FUNCTIONAL -------- INSERT METHOD ONLY CAN BE USED ON USERS.
-router.post('/:id/posts', (req, res) => {
-    db.insert(req.body)
+// MVP -------- 
+router.post('/:id/posts',validatePost ,(req, res) => {
+    postDb.insert(req.body)
     .then(newPost => {
         res.status(200).json(newPost)
     })
@@ -26,7 +27,7 @@ router.post('/:id/posts', (req, res) => {
         res.status(500).json({error:"The users post could not be added."})
     })
 });
-//--------------------------------------------------------------------
+
 router.get('/', (req, res) => {
     db.get()
     .then(users => {
@@ -38,7 +39,7 @@ router.get('/', (req, res) => {
     })
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id',validateUserId ,(req, res) => {
     const id = req.params.id;
 
     db.getById(id)
@@ -94,15 +95,33 @@ router.put('/:id', (req, res) => {
 //custom middleware
 
 function validateUserId(req, res, next) {
-
+    if(req.params.id){
+            
+    }
+    next();
 };
-
+// MVP -------------------------------
 function validateUser(req, res, next) {
-
+    const {name} = req.body
+    if(Object.keys(req.body).length === 0){
+        res.status(400).json({message:"missing user data"})
+    }else if(!name){
+        res.status(400).json({message:"missing required name field"})
+    }
+    next();
 };
+
+
+//SHOULD BE MVP. CANT TEST BECAUSE POST IS BROKEN. -----------------------------
 
 function validatePost(req, res, next) {
-
+    const {text} = req.body
+    if(Object.keys(req.body).length === 0){
+        res.status(400).json({message:"missing post data"})
+    }else if(!text){
+        res.status(400).json({message:"missing required text field"})
+    }
+    next();
 };
 
 module.exports = router;

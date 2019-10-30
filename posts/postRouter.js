@@ -52,7 +52,7 @@ router.put('/:id', (req, res) => {
 });
 
 
-//NEED TO COMPLETE-----------------------------------------------------------
+
 // custom middleware
 
 function validatePostId(req, res, next) {
