@@ -17,7 +17,7 @@ router.post('/',validateUser, (req, res) => {
 
 
 // MVP -------- 
-router.post('/:id/posts',validatePost ,(req, res) => {
+router.post('/:id/posts',validateUserId,validatePost ,(req, res) => {
     postDb.insert(req.body)
     .then(newPost => {
         res.status(200).json(newPost)
@@ -52,7 +52,7 @@ router.get('/:id',validateUserId ,(req, res) => {
     })
 });
 
-router.get('/:id/posts', (req, res) => {
+router.get('/:id/posts',validateUserId, (req, res) => {
     const id = req.params.id;
 
     db.getUserPosts(id)
@@ -65,7 +65,7 @@ router.get('/:id/posts', (req, res) => {
     })
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id',validateUserId, (req, res) => {
     const id = req.params.id;
 
     db.remove(id)
@@ -78,7 +78,7 @@ router.delete('/:id', (req, res) => {
     })
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id',validateUserId, (req, res) => {
     const oldPost = req.params.id;
     const updatedPost = req.body;
 
@@ -104,11 +104,12 @@ function validateUserId(req, res, next) {
         console.log("newUser",newUser)
         // let newUsers = users.map(id => id.id)
         // console.log("newusers",newUsers)
-        if( newUser[0].id == req.params.id){
-            
-            console.log("VAAALIID")
-        }else {
+        if(newUser.length === 0  ){
             res.status(400).json({error:"invalid user id"})
+        }else if(newUser[0].id == req.params.id) {
+            req.user = newUser;
+            // console.log("req.user", req.user)
+            console.log("VAAALIID")
         }
     })
     // .catch(err => {
