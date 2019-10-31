@@ -26,10 +26,13 @@ function logger(req, res, next) {
 
     next();
 };
-
+server.get('/', (req, res) => {
+    res.status(200).json({ message: process.env.MSG });
+  });
 
 const port = process.env.PORT || 4000
 server.listen(port, ()=>{
-    console.log(`/n=== API on port ${port} ===/n`)
+    console.log(`/n=== API on port ${port} ===/n`)\
+    
 })
 

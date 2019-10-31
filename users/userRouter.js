@@ -131,7 +131,7 @@ function validateUser(req, res, next) {
 };
 
 
-//SHOULD BE MVP. CANT TEST BECAUSE POST IS BROKEN. -----------------------------
+//SHOULD BE MVP.  -----------------------------
 
 function validatePost(req, res, next) {
     const {text} = req.body
