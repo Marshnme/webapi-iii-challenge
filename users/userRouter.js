@@ -95,13 +95,19 @@ router.put('/:id', (req, res) => {
 //custom middleware
 
 function validateUserId(req, res, next) {
+    // const id = req.params.id
     db.get()
     .then(users => {
-        // newUser = users.filter(user => user.id == req.params.id)
-        // console.log("newUser",newUser)
-        if( users.map(id => id.id) === req.params.id){
+        console.log("users",users)
+        console.log("req.params.id",req.params.id)
+        let newUser = users.filter(user => user.id == req.params.id)
+        console.log("newUser",newUser)
+        // let newUsers = users.map(id => id.id)
+        // console.log("newusers",newUsers)
+        if( newUser[0].id == req.params.id){
+            
             console.log("VAAALIID")
-        }else{
+        }else {
             res.status(400).json({error:"invalid user id"})
         }
     })
