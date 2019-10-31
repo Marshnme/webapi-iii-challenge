@@ -1,4 +1,5 @@
 // code away!
+require(`dotenv`).config();
 const express = require(`express`);
 const server = express();
 const helmet = require("helmet");
@@ -27,9 +28,8 @@ function logger(req, res, next) {
 };
 
 
-
-const port = 4000;
+const port = process.env.PORT || 4000
 server.listen(port, ()=>{
-    console.log("/n=== API on port 4000 ===/n")
+    console.log(`/n=== API on port ${port} ===/n`)
 })
 
