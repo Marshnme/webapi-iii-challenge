@@ -17,7 +17,9 @@ server.use(`/api/user`, userRouter);
 
 
 
-
+server.get('/', (req, res) => {
+    res.status(200).json({ message: process.env.MSG });
+});
 
 //custom middleware
 
@@ -26,9 +28,7 @@ function logger(req, res, next) {
 
     next();
 };
-server.get('/', (req, res) => {
-    res.status(200).json({ message: process.env.MSG });
-});
+
 
 const port = process.env.PORT || 4000
 server.listen(port, ()=>{
